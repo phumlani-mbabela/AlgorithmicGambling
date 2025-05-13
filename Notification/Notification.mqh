@@ -52,9 +52,7 @@ void Notification::SendWhatsAppNotification(string phone, string message)
    string url = "https://api.twilio.com/2010-04-01/Accounts/YOUR_ACCOUNT_SID/Messages.json";
    string data = "To=" + phone + "&From=whatsapp:+YOUR_TWILIO_NUMBER&Body=" + message;
 
-   char headers[][2] = { {"Authorization", "Basic YOUR_BASE64_ENCODED_CREDENTIALS"},
-      {"Content-Type", "application/x-www-form-urlencoded"}
-   };
+   char headers[][2] ; // { {"Authorization", "Basic YOUR_BASE64_ENCODED_CREDENTIALS"},      {"Content-Type", "application/x-www-form-urlencoded"}   };
 
    char result[];
    int res = 0;//WebRequest("POST", url, headers, 2, data, result, 5000);
