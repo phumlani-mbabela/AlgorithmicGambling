@@ -50,7 +50,6 @@ void CandlestickPattern::createObject(datetime time, double price, int arrowCode
          ObjectSetInteger(0,objNameDesc,OBJPROP_COLOR,clr);
          ObjectSetInteger(0,objNameDesc, OBJPROP_FONTSIZE, 6);  // Set font size
       }
-
       PrintFormat(__FUNCTION__,"-",__LINE__," Spotted a %s candlestick pattern.",txt);
    }
 }

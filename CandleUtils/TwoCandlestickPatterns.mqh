@@ -79,7 +79,7 @@ bool TwoCandlestickPatterns::IsBullishEngulfing_Downtrend_Uptrend() {
 
     // Confirm Bullish Engulfing pattern
     if (firstCandleBearish && secondCandleBullish && secondCandleEngulfs) {
-        createObject(time,low1,217, 1, clrGreen, "Bullish Engulfing");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Bullish Engulfing");
         return true;  // Bullish Engulfing pattern detected
     }
 
@@ -100,7 +100,7 @@ bool TwoCandlestickPatterns::IsBearishEngulfing_Uptrend_Downtrend() {
 
     // Confirm Bearish Engulfing pattern
     if (firstCandleBullish && secondCandleBearish && secondCandleEngulfs) {
-        createObject(time,high1,218, -1, clrRed, "Bearish Engulfing");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,high1,218, -1, clrRed, "Bearish Engulfing");
         return true;  // Bearish Engulfing pattern detected
     }
 
@@ -120,7 +120,7 @@ bool TwoCandlestickPatterns::IsTweezersTop_Uptrend_Downtrend() {
 
     // Confirm Tweezers Top pattern
     if (firstCandleBullish && secondCandleBearish && sameHigh) {
-        createObject(time,low1,217, -1, clrRed, "Tweezers Top");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, -1, clrRed, "Tweezers Top");
         return true;  // Tweezers Top pattern detected
     }
 
@@ -141,7 +141,7 @@ bool TwoCandlestickPatterns::IsTweezersBottom_Downtrend_Uptrend() {
 
     // Confirm Tweezers Bottom pattern
     if (firstCandleBearish && secondCandleBullish && sameLow) {
-    createObject(time,low1,217, 1, clrGreen, "Tweezers Bottom");
+    if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Tweezers Bottom");
         return true;  // Tweezers Bottom pattern detected
     }
 
@@ -166,7 +166,8 @@ bool TwoCandlestickPatterns::IsDarkCloudCover_Uptrend_Downtrend() {
 
     // Confirm Dark Cloud Cover pattern
     if (firstCandleBullish && secondCandleBearish && secondOpenAboveFirstHigh && secondCloseBelowMidpoint) {
-        createObject(time,low1,217, -1, clrRed, "Dark Cloud Cover");
+        
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, -1, clrRed, "Dark Cloud Cover");
         return true;  // Dark Cloud Cover pattern detected
     }
 
@@ -191,7 +192,7 @@ bool TwoCandlestickPatterns::IsPiercingPattern_Downtrend_Uptrend() {
 
     // Confirm Piercing Pattern
     if (firstCandleBearish && secondCandleBullish && secondOpenBelowFirstLow && secondCloseAboveMidpoint) {
-        createObject(time,low1,217, 1, clrGreen, "Piercing Pattern");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Piercing Pattern");
         return true;  // Piercing Pattern detected
     }
 
@@ -212,7 +213,7 @@ bool TwoCandlestickPatterns::IsBullishHarami_Downtrend_Uptrend() {
 
     // Confirm Bullish Harami pattern
     if (firstCandleBearish && secondCandleBullish && secondInsideFirst) {
-        createObject(time,low1,217, 1, clrGreen, "Bullish Harami");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Bullish Harami");
         return true;  // Bullish Harami pattern detected
     }
 
@@ -233,7 +234,7 @@ bool TwoCandlestickPatterns::IsBearishHarami_Uptrend_Downtrend() {
 
     // Confirm Bearish Harami pattern
     if (firstCandleBullish && secondCandleBearish && secondInsideFirst) {
-        createObject(time,low1,217, -1, clrRed, "Bearish Harami");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, -1, clrRed, "Bearish Harami");
         return true;  // Bearish Harami pattern detected
     }
 

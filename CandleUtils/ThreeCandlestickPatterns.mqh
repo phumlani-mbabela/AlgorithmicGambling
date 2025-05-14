@@ -151,7 +151,7 @@ bool ThreeCandlestickPatterns::IsMasterCandle_Uptrend_Continuation(int index = 1
 
     // Confirm the Master Candle pattern (second stage should have 5 candles within the range of the Master Candle)
     if (isContained && isLargestCandle) {
-        createObject(time,low1,217, 1, clrGreen, "Master Candle");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Master Candle");
         return true;  // Master Candle pattern detected
     }
 
@@ -180,7 +180,7 @@ bool ThreeCandlestickPatterns::IsFallingThreeMethods_Downtrend_Uptrend() {
 
     // Confirm the Falling Three Methods pattern
     if (firstCandleBullish && lastCandleBearish && smallCandles && candlesWithinFirstCandle) {
-        createObject(time,low1,217, 1, clrGreen, "Falling Three Methods");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Falling Three Methods");
         return true;  // Falling Three Methods detected
     }
     
@@ -209,7 +209,7 @@ bool ThreeCandlestickPatterns::IsRisingThreeMethods_Uptrend_Downtrend() {
 
     // Confirm the Rising Three Methods pattern
     if (firstCandleBearish && lastCandleBullish && smallCandles && candlesWithinFirstCandle) {
-        createObject(time,low1,217, -1, clrRed, "Rising Three Methods");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, -1, clrRed, "Rising Three Methods");
         return true;  // Rising Three Methods detected
     }
     
@@ -234,7 +234,7 @@ bool ThreeCandlestickPatterns::IsMorningStar_Downtrend_Uptrend() {
 
     // Confirm Morning Star pattern
     if (firstCandleBearish && secondCandleSmall && thirdCandleBullish && thirdCandleAboveMidpoint) {
-        createObject(time,low1,217, 1, clrGreen, "Morning Star");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, 1, clrGreen, "Morning Star");
         return true;  // Morning Star pattern detected
     }
 
@@ -259,7 +259,7 @@ bool ThreeCandlestickPatterns::IsEveningStar_Uptrend_Downtrend() {
 
     // Confirm Evening Star pattern
     if (firstCandleBullish && secondCandleSmallBody && thirdCandleBearish && thirdCloseBelowMidpoint) {
-        createObject(time,low1,217, -1, clrRed, "Evening Star");
+        if(!MQL5InfoInteger(MQL5_OPTIMIZATION)) createObject(time,low1,217, -1, clrRed, "Evening Star");
         return true;  // Evening Star pattern detected
     }
 
