@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2025, Phumlani Mbabela Inc"
 #property link      "https://www.phumlanimbabela.co.za"
-#property version   "1.22"
+#property version   "1.23"
 #include <Trade\Trade.mqh>
 #include <ChartObjects\ChartObjectsTxtControls.mqh>
 #include "CandleUtils\ThreeCandlestickPatterns.mqh"
@@ -20,7 +20,6 @@ CTrade trade;
 input double RiskPercent     = 1.0;                // Risk per trade (%)
 input double StopLossPips    = 100.0;              // SL in pips
 input double TakeProfitPips  = 140.0;              // TP in pips
-
 input int MAPeriod           = 28;                 // MA Period
 input int MAShift            = 4;                  // MA Shift
 input ENUM_MA_METHOD MAType  = MODE_EMA;           // MA Type
@@ -30,8 +29,8 @@ input string SoundProfit     = "profit.wav";       // Sound for profitable trade
 input string SoundLoss       = "loss.wav";         // Sound for losing trade
 input ulong EAMagicNumber    = 70920035;           // EAMagicNumber
 input bool IgnoreCandleStickPremonition = true;    // IgnoreCandleStickPremonition
-input int SpreadMax = 13; // SpreadMax
-
+input int SpreadMax = 13;                          // SpreadMax
+input int MaxNumberOfTrades = 2;                   // MaxNumberOfTrades
 
 // BUTTONS
 string btnNames[5] = {"Buy", "Sell", "Close All", "Close Buy", "Close Sell"};
@@ -49,6 +48,8 @@ datetime lastResetTime = 0;
 
 bool buyEntry=false, sellEntry=false;
 int barsForCandlestickPattern =0;
+
+int CurrentNumberOfTrades = 0;
 
 Notification notification;
 
@@ -112,7 +113,6 @@ void OnTimer() {
          else lossCount++;
       }
    }
-
 }
 
 //+------------------------------------------------------------------+
@@ -162,11 +162,34 @@ void OnTick() {
    
    double spreadPoints = GetSpread(_Symbol, false);
    double spreadPips   = GetSpread(_Symbol, true);
+   
+   CurrentNumberOfTrades = GetCurrentNumberOfTradesByMagic(EAMagicNumber);
 
    string trend = CheckTrend();
-   if(      (trend == "UP"   ) && buyEntry  && (marketTrend==TREND_BULLISH) && (dir==TREND_BULLISH) && (spreadPoints<=SpreadMax) ) TryBuy()  ;
-   else if( (trend == "DOWN" ) && sellEntry && (marketTrend==TREND_BEARISH) && (dir==TREND_BEARISH) && (spreadPoints<=SpreadMax) ) TrySell() ;
+   if(      (trend == "UP" || trend == "FLAT" )   && buyEntry  && (marketTrend==TREND_BULLISH) && (dir==TREND_BULLISH) && (spreadPoints<=SpreadMax) && (CurrentNumberOfTrades<=MaxNumberOfTrades) ) TryBuy()  ;
+   else if( (trend == "DOWN" || trend == "FLAT" ) && sellEntry && (marketTrend==TREND_BEARISH) && (dir==TREND_BEARISH) && (spreadPoints<=SpreadMax) && (CurrentNumberOfTrades<=MaxNumberOfTrades) ) TrySell() ;
 }
+
+
+int GetCurrentNumberOfTradesByMagic(ulong magicNumber)
+{
+    int count = 0;
+    int total = PositionsTotal();
+
+    for (int i = 0; i < total; i++)
+    {
+        if (PositionGetTicket(i) > 0 && PositionSelectByTicket(PositionGetTicket(i)))
+        {
+            if (PositionGetInteger(POSITION_MAGIC) == magicNumber)
+            {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
 
 // RESET DAILY COUNTERS
 void ResetDailyCounters() {
