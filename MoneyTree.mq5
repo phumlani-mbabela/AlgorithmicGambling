@@ -30,8 +30,8 @@ input string SoundProfit     = "profit.wav";       // Sound for profitable trade
 input string SoundLoss       = "loss.wav";         // Sound for losing trade
 input ulong EAMagicNumber    = 70920035;           // EAMagicNumber
 input bool IgnoreCandleStickPremonition = true;    // IgnoreCandleStickPremonition
-input int SpreadMax = 13; // SpreadMax
-
+input int SpreadMax = 13;                          // SpreadMax
+input int MaxNumberOfTrades = 2;                   // MaxNumberOfTrades
 
 // BUTTONS
 string btnNames[5] = {"Buy", "Sell", "Close All", "Close Buy", "Close Sell"};
@@ -49,6 +49,8 @@ datetime lastResetTime = 0;
 
 bool buyEntry=false, sellEntry=false;
 int barsForCandlestickPattern =0;
+
+int CurrentNumberOfTrades = 0;
 
 Notification notification;
 
@@ -142,6 +144,23 @@ void updateCandlesticks() {
    }
 }
 
+int GetCurrentNumberOfTradesByMagic(ulong magicNumber)
+{
+    int count = 0;
+    int total = PositionsTotal();
+    for (int i = 0; i < total; i++)
+    {
+        if (PositionGetTicket(i) > 0 && PositionSelectByTicket(PositionGetTicket(i)))
+        {
+            if (PositionGetInteger(POSITION_MAGIC) == magicNumber)
+            {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
 // TICK HANDLER
 void OnTick() {
    static datetime lastCheck = 0;
@@ -163,9 +182,16 @@ void OnTick() {
    double spreadPoints = GetSpread(_Symbol, false);
    double spreadPips   = GetSpread(_Symbol, true);
 
+   //string trend = CheckTrend();
+   //if(      (trend == "UP"   ) && buyEntry  && (marketTrend==TREND_BULLISH) && (dir==TREND_BULLISH) && (spreadPoints<=SpreadMax) ) TryBuy()  ;
+   //else if( (trend == "DOWN" ) && sellEntry && (marketTrend==TREND_BEARISH) && (dir==TREND_BEARISH) && (spreadPoints<=SpreadMax) ) TrySell() ;
+   
+   CurrentNumberOfTrades = GetCurrentNumberOfTradesByMagic(EAMagicNumber);
+
    string trend = CheckTrend();
-   if(      (trend == "UP"   ) && buyEntry  && (marketTrend==TREND_BULLISH) && (dir==TREND_BULLISH) && (spreadPoints<=SpreadMax) ) TryBuy()  ;
-   else if( (trend == "DOWN" ) && sellEntry && (marketTrend==TREND_BEARISH) && (dir==TREND_BEARISH) && (spreadPoints<=SpreadMax) ) TrySell() ;
+   if     ( (trend == "UP"  ) && buyEntry  && (marketTrend==TREND_BULLISH) && (dir==TREND_BULLISH) && (spreadPoints<=SpreadMax) && (CurrentNumberOfTrades<=MaxNumberOfTrades) ) TryBuy()  ;
+   else if( (trend == "DOWN") && sellEntry && (marketTrend==TREND_BEARISH) && (dir==TREND_BEARISH) && (spreadPoints<=SpreadMax) && (CurrentNumberOfTrades<=MaxNumberOfTrades) ) TrySell() ;
+
 }
 
 // RESET DAILY COUNTERS

@@ -175,7 +175,6 @@ int GetCurrentNumberOfTradesByMagic(ulong magicNumber)
 {
     int count = 0;
     int total = PositionsTotal();
-
     for (int i = 0; i < total; i++)
     {
         if (PositionGetTicket(i) > 0 && PositionSelectByTicket(PositionGetTicket(i)))
@@ -186,10 +185,8 @@ int GetCurrentNumberOfTradesByMagic(ulong magicNumber)
             }
         }
     }
-
     return count;
 }
-
 
 // RESET DAILY COUNTERS
 void ResetDailyCounters() {
