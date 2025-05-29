@@ -27,7 +27,7 @@ input ENUM_APPLIED_PRICE MAPrice = PRICE_TYPICAL;  // MA Price Type
 
 input string SoundProfit     = "profit.wav";       // Sound for profitable trade
 input string SoundLoss       = "loss.wav";         // Sound for losing trade
-input ulong EAMagicNumber    = 70920035;           // EAMagicNumber
+input ulong EAMagicNumber    = 373092040352;       // EAMagicNumber
 input bool IgnoreCandleStickPremonition = true;    // IgnoreCandleStickPremonition
 input int SpreadMax = 13;                          // SpreadMax
 input int MaxNumberOfTrades = 2;                   // MaxNumberOfTrades
@@ -250,6 +250,7 @@ void TryBuy() {
    double tp  = TakeProfitPips * _Point;
 
    double ask;
+   trade.SetExpertMagicNumber(EAMagicNumber);
    SymbolInfoDouble(_Symbol, SYMBOL_ASK, ask);
    if(trade.Buy(lot, _Symbol, ask, ask - sl, ask + tp)) {
       PlaySound(SoundProfit);
@@ -268,6 +269,7 @@ void TrySell() {
    double tp  = TakeProfitPips * _Point;
 
    double bid;
+   trade.SetExpertMagicNumber(EAMagicNumber);
    SymbolInfoDouble(_Symbol, SYMBOL_BID, bid);
    if(trade.Sell(lot, _Symbol, bid, bid + sl, bid - tp)) {
       PlaySound(SoundProfit);
