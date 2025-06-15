@@ -29,7 +29,7 @@ input string SoundProfit     = "profit.wav";       // Sound for profitable trade
 input string SoundLoss       = "loss.wav";         // Sound for losing trade
 input ulong EAMagicNumber    = 373092040352;       // EAMagicNumber
 input bool IgnoreCandleStickPremonition = true;    // IgnoreCandleStickPremonition
-input int SpreadMax = 13;                          // SpreadMax
+input int SpreadMax = 25;                          // SpreadMax
 input int MaxNumberOfTrades = 2;                   // MaxNumberOfTrades
 
 // BUTTONS
